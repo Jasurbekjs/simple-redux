@@ -4,7 +4,7 @@ import './App.css';
 function App() {
 
   const dispatch = useDispatch() // диспатсчер, функция изменяющая состояние
-  const cash = useSelector(state=> state.cash) // селектор для получения текущего состояния переменной
+  const cash = useSelector(state=> state.cash.cash) // селектор для получения текущего состояния переменной
   
   const addCash = (cash) => {
     dispatch({type: "ADD_CASH", payload: cash})
