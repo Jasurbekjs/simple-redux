@@ -1,64 +1,30 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
-import { addCustomerAction, removeCustomerAction } from './store/customerReducer';
-import { fetchCustomers } from './api/customers';
+import { decrementCreator, incrementCreator } from './store/countReducer';
 
 function App() {
 
   const dispatch = useDispatch() // диспатсчер, функция изменяющая состояние
-  const cash = useSelector(state=> state.cash.cash) // селектор для получения текущего состояния переменной
-  const customers = useSelector(state=> state.customers.customers)
-
-  const addCash = (cash) => {
-    dispatch({type: "ADD_CASH", payload: cash})
-  }
-  const getCash = (cash) => {
-    dispatch({type: "GET_CASH", payload: cash})
-  }
-
-  const addCustomer = (name) => {
-    const customer = {
-      name,
-      id: Date.now()
-    }
-    dispatch(addCustomerAction(customer))
-  }
-  const removeCustomer = (id) => {
-    dispatch(removeCustomerAction(id))
-  }
-  const addManyCustomers = () => {
-    dispatch(fetchCustomers())
-  }
+  const count = useSelector(state=> state.countReducer.count) // селектор для получения текущего состояния переменной
+  const users = useSelector(state=> state.usersReducer.users)
 
   return (
     <>
-      <div className='app'>
-        <div style={{fontSize: '20px'}}>
-          {cash}
+      <div className="app">
+            <div className="count">{count}</div>
+            <div className="btns">
+                <button className="btn" onClick={() => dispatch(incrementCreator())}>ИНКРЕМЕНТ++</button>
+                <button className="btn" onClick={() => dispatch(decrementCreator())}>ДЕКРЕМЕНТ--</button>
+                <button className="btn">ПОЛУЧИТЬ ЮЗЕРОВ--</button>
+            </div>
+            <div className="users">
+                {users.map(user =>
+                    <div className="user">
+                        {user.name}
+                    </div>
+                )}
+            </div>
         </div>
-        <div style={{display: 'flex', gap: '10px'}}>
-          <button onClick={()=>addCash( Number(prompt()) )}>Пополнить счет</button>
-          <button onClick={()=>getCash( Number(prompt()) )}>Снять со счета</button>
-        </div>
-        <div style={{display: 'flex', gap: '10px'}}>
-          <button onClick={()=>addCustomer( prompt() )}>Добавить клиента</button>
-          <button onClick={()=>addManyCustomers()}>Добавить клиентов из базы</button>
-        </div>
-        {customers.length > 0 ? 
-          <div>
-            {customers.map(customer => 
-                <div key={customer.id}>
-                  <span> {customer.name} </span>
-                  <button onClick={()=>removeCustomer( customer.id )}>Удалить клиента</button> 
-                </div>
-            )}
-          </div>
-          : 
-          <div style={{fontSize: '2rem', marginTop: 20}}>
-            Клиенты отсутствуют!
-          </div>
-        }
-      </div>
     </>
   );
 }
