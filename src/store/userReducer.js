@@ -1,6 +1,7 @@
 const defaultState = { users: [] }
 
 export const SET_USERS = "SET_USERS"
+export const ASYNC_SET_USERS = "ASYNC_SET_USERS"
 
 export default function userReducer (state = defaultState, action) {
     switch (action.type) {
@@ -10,3 +11,4 @@ export default function userReducer (state = defaultState, action) {
 }
 
 export const usersCreator = (payload) => ({ type: SET_USERS, payload})
+export const AsyncUsersCreator = () => ({ type: ASYNC_SET_USERS })
